@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Credits Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #121212 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.1);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #39ff14;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+
+        .form-section {
+            background: #121212;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(57, 255, 20, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #39ff14;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #000000;
+            border: 2px solid rgba(57, 255, 20, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #39ff14;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+        }
+
+        .custom-inputs {
+            display: none;
+            margin-top: 15px;
+            padding: 20px;
+            background: #0a0a0a;
+            border-radius: 8px;
+            border: 1px solid rgba(57, 255, 20, 0.2);
+        }
+
+        .custom-inputs.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #39ff14 0%, #2dd40f 100%);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(57, 255, 20, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #666 0%, #555 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 8px 25px rgba(102, 102, 102, 0.4);
+        }
+
+        .subjects-list {
+            background: #121212;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(57, 255, 20, 0.1);
+        }
+
+        .subjects-list h2 {
+            color: #39ff14;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .subject-item {
+            background: #1a1a1a;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #39ff14;
+            transition: all 0.3s ease;
+        }
+
+        .subject-item:hover {
+            background: #222;
+            transform: translateX(5px);
+        }
+
+        .subject-info {
+            flex-grow: 1;
+        }
+
+        .subject-name {
+            font-weight: bold;
+            color: #39ff14;
+            font-size: 1.1rem;
+        }
+
+        .subject-details {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .remove-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: #ff6666;
+            transform: scale(1.05);
+        }
+
+        .total-section {
+            background: linear-gradient(135deg, #39ff14 0%, #2dd40f 100%);
+            color: #000;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.3);
+        }
+
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .success-message {
+            background: #39ff14;
+            color: #000;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 30px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .subject-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .remove-btn {
+                align-self: flex-end;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Academic Credits Calculator</h1>
+            <p>Manage and calculate your academic credits with grade weightings</p>
+        </div>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="subjectSelect">Select Subject:</label>
+                <select id="subjectSelect">
+                    <option value="">Choose a subject...</option>
+                    <option value="custom">Add Custom Subject</option>
+                </select>
+            </div>
+
+            <div class="custom-inputs" id="customInputs">
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="customName">Subject Name:</label>
+                        <input type="text" id="customName" placeholder="Enter subject name">
+                    </div>
+                    <div class="form-group">
+                        <label for="customCredits">Credits:</label>
+                        <input type="number" id="customCredits" placeholder="Credits" min="1" max="10" step="0.5">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="gradeSelect">Grade:</label>
+                <select id="gradeSelect">
+                    <option value="">Select grade...</option>
+                    <option value="1.0">A (Excellent)</option>
+                    <option value="1.5">B (Good)</option>
+                    <option value="2.0">C (Satisfactory)</option>
+                    <option value="2.5">D (Sufficient)</option>
+                    <option value="3.0">E (Sufficient)</option>
+                    <option value="3.0">No Grade</option>
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button class="btn" onclick="addSubject()">Add Subject</button>
+                <button class="btn btn-secondary" onclick="clearAllData()">Clear All</button>
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+        </div>
+
+        <div class="subjects-list">
+            <h2>Added Subjects</h2>
+            <div id="subjectsList">
+                <div class="empty-state">No subjects added yet. Add your first subject above!</div>
+            </div>
+        </div>
+
+        <div class="total-section">
+            <div>Total Calculated Credits: <span id="totalCredits">0.00</span></div>
+        </div>
+    </div>
+
+    <script>
+        // Predefined subjects with random credits
+        const predefinedSubjects = [
+            { name: 'PCC', credits: 5.0 },
+            { name: 'OMO', credits: 6.0 },
+            { name: 'EAR', credits: 5.0 },
+            { name: 'UOP', credits: 4.0 },
+            { name: 'PSI', credits: 5.0 },
+            { name: 'ISP', credits: 5.0 },
+            { name: 'MAA', credits: 5.0 },
+            { name: 'NSS', credits: 5.0 },
+            { name: 'DSA', credits: 6.0 },
+            { name: 'INS', credits: 4.0 },
+            { name: 'PRA', credits: 5.0 },
+            { name: 'KAJ', credits: 5.0 },
+            { name: 'SPS', credits: 5.0 },
+            { name: 'ZAN', credits: 5.0 }
+        ];
+
+        // Global variables
+        let subjects = [];
+        const gradeValues = {
+            '1.0': 'A',
+            '1.5': 'B', 
+            '2.0': 'C',
+            '2.5': 'D',
+            '3.0': 'E/No Grade'
+        };
+
+        // DOM elements
+        const subjectSelect = document.getElementById('subjectSelect');
+        const customInputs = document.getElementById('customInputs');
+        const customName = document.getElementById('customName');
+        const customCredits = document.getElementById('customCredits');
+        const gradeSelect = document.getElementById('gradeSelect');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const subjectsList = document.getElementById('subjectsList');
+        const totalCredits = document.getElementById('totalCredits');
+
+        // Initialize the application
+        function init() {
+            populateSubjectDropdown();
+            loadFromStorage();
+            updateSubjectsList();
+            updateTotalCredits();
+        }
+
+        // Populate subject dropdown with predefined subjects
+        function populateSubjectDropdown() {
+            // Clear existing options except the first two
+            while (subjectSelect.children.length > 2) {
+                subjectSelect.removeChild(subjectSelect.lastChild);
+            }
+
+            // Add predefined subjects
+            predefinedSubjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = `${subject.name}|${subject.credits}`;
+                option.textContent = `${subject.name} (${subject.credits} credits)`;
+                subjectSelect.appendChild(option);
+            });
+        }
+
+        // Load data from localStorage
+        function loadFromStorage() {
+            try {
+                const storedSubjects = localStorage.getItem('academicSubjects');
+                if (storedSubjects) {
+                    subjects = JSON.parse(storedSubjects);
+                }
+            } catch (error) {
+                console.error('Error loading from localStorage:', error);
+                subjects = [];
+            }
+        }
+
+        // Save data to localStorage (internal function)
+        function saveToStorage() {
+            try {
+                localStorage.setItem('academicSubjects', JSON.stringify(subjects));
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+            }
+        }
+
+        // Event listeners
+        subjectSelect.addEventListener('change', handleSubjectSelection);
+
+        function handleSubjectSelection() {
+            const value = subjectSelect.value;
+            if (value === 'custom') {
+                customInputs.classList.add('show');
+                customName.focus();
+            } else {
+                customInputs.classList.remove('show');
+            }
+            hideMessages();
+        }
+
+        function addSubject() {
+            const selectedValue = subjectSelect.value;
+            const gradeValue = parseFloat(gradeSelect.value);
+            
+            // Validation
+            if (!selectedValue) {
+                showError('Please select a subject.');
+                return;
+            }
+            
+            if (!gradeValue && gradeValue !== 0) {
+                showError('Please select a grade.');
+                return;
+            }
+
+            let subjectName, credits;
+
+            if (selectedValue === 'custom') {
+                subjectName = customName.value.trim();
+                credits = parseFloat(customCredits.value);
+
+                if (!subjectName) {
+                    showError('Please enter a subject name.');
+                    return;
+                }
+
+                if (!credits || credits <= 0) {
+                    showError('Please enter valid credits (greater than 0).');
+                    return;
+                }
+            } else {
+                const [name, creditStr] = selectedValue.split('|');
+                subjectName = name;
+                credits = parseFloat(creditStr);
+            }
+
+            // Check for duplicates
+            if (subjects.some(subject => subject.name.toLowerCase() === subjectName.toLowerCase())) {
+                showError('This subject has already been added.');
+                return;
+            }
+
+            // Calculate credits using the formula: calculatedCredits = credits * (4 - gradeValue)
+            const calculatedCredits = credits * (4 - gradeValue);
+
+            // Add subject to array
+            const subject = {
+                id: Date.now(),
+                name: subjectName,
+                credits: credits,
+                grade: gradeValue,
+                gradeLetter: gradeValues[gradeValue.toString()],
+                calculatedCredits: calculatedCredits
+            };
+
+            subjects.push(subject);
+
+            // Auto-save to localStorage
+            saveToStorage();
+
+            // Reset form
+            resetForm();
+            
+            // Update display
+            updateSubjectsList();
+            updateTotalCredits();
+            
+            hideMessages();
+        }
+
+        function removeSubject(id) {
+            subjects = subjects.filter(subject => subject.id !== id);
+            saveToStorage(); // Auto-save after removal
+            updateSubjectsList();
+            updateTotalCredits();
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+                subjects = [];
+                localStorage.removeItem('academicSubjects');
+                updateSubjectsList();
+                updateTotalCredits();
+                showSuccess('All data cleared successfully!');
+            }
+        }
+
+        function updateSubjectsList() {
+            if (subjects.length === 0) {
+                subjectsList.innerHTML = '<div class="empty-state">No subjects added yet. Add your first subject above!</div>';
+                return;
+            }
+
+            const html = subjects.map(subject => `
+                <div class="subject-item">
+                    <div class="subject-info">
+                        <div class="subject-name">${subject.name}</div>
+                        <div class="subject-details">
+                            ${subject.credits} credits × (4 - ${subject.grade}) = ${subject.credits} x ${4 - subject.grade} = ${subject.calculatedCredits.toFixed(2)} calculated credits
+                        </div>
+                    </div>
+                    <button class="remove-btn" onclick="removeSubject(${subject.id})">Remove</button>
+                </div>
+            `).join('');
+
+            subjectsList.innerHTML = html;
+        }
+
+        function updateTotalCredits() {
+            const total = subjects.reduce((sum, subject) => sum + subject.calculatedCredits, 0);
+            totalCredits.textContent = total.toFixed(2);
+        }
+
+        function resetForm() {
+            subjectSelect.value = '';
+            gradeSelect.value = '';
+            customName.value = '';
+            customCredits.value = '';
+            customInputs.classList.remove('show');
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+            setTimeout(hideMessages, 5000);
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            setTimeout(hideMessages, 3000);
+        }
+
+        function hideMessages() {
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+        }
+
+        // Initialize the application when the page loads
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
