@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Credits Calculator</title>
+    <title>Credits Calculator</title>
     <style>
         * {
             margin: 0;
@@ -286,8 +286,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Academic Credits Calculator</h1>
-            <p>Manage and calculate your academic credits with grade weightings</p>
+            <h1>Credits Calculator</h1>
+            <p>SIT FEL CTU</p>
         </div>
 
         <div class="form-section">
@@ -337,7 +337,7 @@
         <div class="subjects-list">
             <h2>Added Subjects</h2>
             <div id="subjectsList">
-                <div class="empty-state">No subjects added yet. Add your first subject above!</div>
+                <div class="empty-state">No subjects added yet. Add your first subject above</div>
             </div>
         </div>
 
@@ -535,7 +535,7 @@
 
         function updateSubjectsList() {
             if (subjects.length === 0) {
-                subjectsList.innerHTML = '<div class="empty-state">No subjects added yet. Add your first subject above!</div>';
+                subjectsList.innerHTML = '<div class="empty-state">No subjects added yet. Add your first subject above</div>';
                 return;
             }
 
