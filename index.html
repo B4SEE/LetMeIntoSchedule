@@ -5,6 +5,232 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Credits Calculator</title>
     <style>
+        :root {
+            /* Theme Colors - Default to White Theme */
+            --color-primary: #ffffff;
+            --color-primary-dark: #e6e6e6;
+            --color-primary-alpha-10: rgba(255, 255, 255, 0.1);
+            --color-primary-alpha-20: rgba(255, 255, 255, 0.2);
+            --color-primary-alpha-30: rgba(255, 255, 255, 0.3);
+            --color-primary-alpha-40: rgba(255, 255, 255, 0.4);
+            --color-primary-alpha-50: rgba(255, 255, 255, 0.5);
+
+            /* Base Colors */
+            --color-background: #000000;
+            --color-background-light: #121212;
+            --color-background-lighter: #1a1a1a;
+            --color-background-lightest: #222222;
+            --color-text: white;
+            --color-text-secondary: #cccccc;
+            --color-text-muted: #666666;
+            --color-error: #ff4444;
+            --color-error-hover: #ff6666;
+            
+            /* Gradients */
+            --gradient-background: linear-gradient(135deg, var(--color-background) 0%, var(--color-background-light) 100%);
+            --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--color-text-muted) 0%, var(--color-background-lighter) 100%);
+            
+            /* Spacing */
+            --spacing-xs: 5px;
+            --spacing-sm: 8px;
+            --spacing-md: 15px;
+            --spacing-lg: 20px;
+            --spacing-xl: 25px;
+            --spacing-xxl: 30px;
+            --spacing-xxxl: 40px;
+            
+            /* Border Radius */
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 10px;
+            --border-radius-xl: 15px;
+            
+            /* Font Sizes */
+            --font-size-sm: 0.9rem;
+            --font-size-base: 1rem;
+            --font-size-md: 1.1rem;
+            --font-size-lg: 1.5rem;
+            --font-size-xl: 2rem;
+            --font-size-xxl: 2.5rem;
+            
+            /* Transitions */
+            --transition-base: all 0.3s ease;
+
+            /* Effects */
+            --shadow-primary: 0 0 30px var(--color-primary-alpha-10);
+            --shadow-primary-hover: 0 8px 25px var(--color-primary-alpha-40);
+            --shadow-secondary-hover: 0 8px 25px var(--color-text-muted-alpha);
+            --text-shadow: 0 0 20px var(--color-primary-alpha-50);
+            --border-primary: 1px solid var(--color-primary-alpha-20);
+            --border-primary-hover: 2px solid var(--color-primary-alpha-30);
+        }
+
+        /* Theme Classes */
+        :root[data-theme="green"] {
+            --color-primary: #39ff14;
+            --color-primary-dark: #2dd40f;
+            --color-primary-alpha-10: rgba(57, 255, 20, 0.1);
+            --color-primary-alpha-20: rgba(57, 255, 20, 0.2);
+            --color-primary-alpha-30: rgba(57, 255, 20, 0.3);
+            --color-primary-alpha-40: rgba(57, 255, 20, 0.4);
+            --color-primary-alpha-50: rgba(57, 255, 20, 0.5);
+        }
+
+        :root[data-theme="blue"] {
+            --color-primary: #1495ff;
+            --color-primary-dark: #0077ff;
+            --color-primary-alpha-10: rgba(14, 149, 255, 0.1);
+            --color-primary-alpha-20: rgba(14, 149, 255, 0.2);
+            --color-primary-alpha-30: rgba(14, 149, 255, 0.3);
+            --color-primary-alpha-40: rgba(14, 149, 255, 0.4);
+            --color-primary-alpha-50: rgba(14, 149, 255, 0.5);
+        }
+
+        :root[data-theme="red"] {
+            --color-primary: #ff4444;
+            --color-primary-dark: #ff6666;
+            --color-primary-alpha-10: rgba(255, 68, 68, 0.1);
+            --color-primary-alpha-20: rgba(255, 68, 68, 0.2);
+            --color-primary-alpha-30: rgba(255, 68, 68, 0.3);
+            --color-primary-alpha-40: rgba(255, 68, 68, 0.4);
+            --color-primary-alpha-50: rgba(255, 68, 68, 0.5);
+        }
+
+        :root[data-theme="orange"] {
+            --color-primary: #ffa500;
+            --color-primary-dark: #ff8c00;
+            --color-primary-alpha-10: rgba(255, 165, 0, 0.1);
+            --color-primary-alpha-20: rgba(255, 165, 0, 0.2);
+            --color-primary-alpha-30: rgba(255, 165, 0, 0.3);
+            --color-primary-alpha-40: rgba(255, 165, 0, 0.4);
+            --color-primary-alpha-50: rgba(255, 165, 0, 0.5);
+        }
+
+        :root[data-theme="yellow"] {
+            --color-primary: #ffd700;
+            --color-primary-dark: #ffc700;
+            --color-primary-alpha-10: rgba(255, 215, 0, 0.1);
+            --color-primary-alpha-20: rgba(255, 215, 0, 0.2);
+            --color-primary-alpha-30: rgba(255, 215, 0, 0.3);
+            --color-primary-alpha-40: rgba(255, 215, 0, 0.4);
+            --color-primary-alpha-50: rgba(255, 215, 0, 0.5);
+        }
+
+        :root[data-theme="pink"] {
+            --color-primary: #ff69b4;
+            --color-primary-dark: #ff33a0;
+            --color-primary-alpha-10: rgba(255, 105, 180, 0.1);
+            --color-primary-alpha-20: rgba(255, 105, 180, 0.2);
+            --color-primary-alpha-30: rgba(255, 105, 180, 0.3);
+            --color-primary-alpha-40: rgba(255, 105, 180, 0.4);
+            --color-primary-alpha-50: rgba(255, 105, 180, 0.5);
+        }
+
+        /* Theme Switcher Styles */
+        .theme-switcher {
+            position: fixed;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            display: flex;
+            gap: var(--spacing-sm);
+            background: var(--color-background-lighter);
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius-md);
+            border: var(--border-primary);
+            z-index: 1000;
+            transition: var(--transition-base);
+            transform-origin: right top;
+        }
+
+        .theme-switcher.collapsed {
+            transform: scale(0);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-background-lighter);
+            border: var(--border-primary);
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            transition: var(--transition-base);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--color-background-lightest);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .theme-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--color-background-light);
+            transition: var(--transition-base);
+        }
+
+        .theme-option:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-option.active {
+            border-color: var(--color-text);
+        }
+
+        .theme-option[data-theme="white"] { background: #ffffff; }
+        .theme-option[data-theme="green"] { background: #39ff14; }
+        .theme-option[data-theme="blue"] { background: #1495ff; }
+        .theme-option[data-theme="red"] { background: #ff4444; }
+        .theme-option[data-theme="orange"] { background: #ffa500; }
+        .theme-option[data-theme="yellow"] { background: #ffd700; }
+        .theme-option[data-theme="pink"] { background: #ff69b4; }
+
+        /* Update existing styles to use new variables */
+        .subject-item:hover {
+            background: var(--color-background-lightest);
+            transform: translateX(var(--spacing-xs));
+        }
+
+        .subject-option:hover {
+            background: var(--color-primary-alpha-10);
+        }
+
+        .subject-option.selected {
+            background: var(--color-primary-alpha-20);
+        }
+
+        .subject-dropdown::-webkit-scrollbar-thumb {
+            background: var(--color-primary-alpha-30);
+        }
+
+        .subject-dropdown::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary-alpha-50);
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 15px var(--color-primary-alpha-30);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,83 +239,78 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #000000 0%, #121212 100%);
-            color: white;
+            background: var(--gradient-background);
+            color: var(--color-text);
             min-height: 100vh;
-            padding: 20px;
+            padding: var(--spacing-lg);
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: #1a1a1a;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 0 30px rgba(57, 255, 20, 0.1);
-            border: 1px solid rgba(57, 255, 20, 0.2);
+            background: var(--color-background-lighter);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xxl);
+            box-shadow: var(--shadow-primary);
+            border: var(--border-primary);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: var(--spacing-xxxl);
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            color: #39ff14;
-            text-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
-            margin-bottom: 10px;
+            font-size: var(--font-size-xxl);
+            color: var(--color-primary);
+            text-shadow: var(--text-shadow);
+            margin-bottom: var(--spacing-sm);
         }
 
         .header p {
-            color: #ccc;
-            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-md);
         }
 
         .form-section {
-            background: #121212;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(57, 255, 20, 0.1);
+            background: var(--color-background-light);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            margin-bottom: var(--spacing-xxl);
+            border: var(--border-primary);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: var(--spacing-lg);
+            position: relative;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            color: #39ff14;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-primary);
             font-weight: bold;
-            font-size: 1rem;
+            font-size: var(--font-size-base);
         }
 
         select, input {
             width: 100%;
-            padding: 12px 15px;
-            background: #000000;
-            border: 2px solid rgba(57, 255, 20, 0.3);
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        select:focus, input:focus {
-            outline: none;
-            border-color: #39ff14;
-            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--color-background);
+            border: var(--border-primary-hover);
+            border-radius: var(--border-radius-md);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+            transition: var(--transition-base);
         }
 
         .custom-inputs {
             display: none;
-            margin-top: 15px;
-            padding: 20px;
-            background: #0a0a0a;
-            border-radius: 8px;
-            border: 1px solid rgba(57, 255, 20, 0.2);
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-lg);
+            background: var(--color-background);
+            border-radius: var(--border-radius-md);
+            border: var(--border-primary);
         }
 
         .custom-inputs.show {
@@ -105,28 +326,28 @@
         .input-row {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
         }
 
         .btn {
-            background: linear-gradient(135deg, #39ff14 0%, #2dd40f 100%);
-            color: #000;
+            background: var(--gradient-primary);
+            color: var(--color-background);
             border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            padding: var(--spacing-md) var(--spacing-xxl);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-md);
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition-base);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-right: 10px;
+            margin-right: var(--spacing-sm);
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(57, 255, 20, 0.4);
+            box-shadow: var(--shadow-primary-hover);
         }
 
         .btn:active {
@@ -134,43 +355,40 @@
         }
 
         .btn-secondary {
-            background: linear-gradient(135deg, #666 0%, #555 100%);
-            color: white;
+            background: var(--color-background-lighter);
+            color: var(--color-text);
+            border: var(--border-primary);
         }
 
         .btn-secondary:hover {
-            box-shadow: 0 8px 25px rgba(102, 102, 102, 0.4);
+            box-shadow: var(--shadow-secondary-hover);
+            background: var(--color-background-lightest);
         }
 
         .subjects-list {
-            background: #121212;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(57, 255, 20, 0.1);
+            background: var(--color-background-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xxl);
+            border: var(--border-primary);
         }
 
         .subjects-list h2 {
-            color: #39ff14;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+            font-size: var(--font-size-lg);
         }
 
         .subject-item {
-            background: #1a1a1a;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
+            background: var(--color-background-lighter);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            border-radius: var(--border-radius-md);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-left: 4px solid #39ff14;
-            transition: all 0.3s ease;
-        }
-
-        .subject-item:hover {
-            background: #222;
-            transform: translateX(5px);
+            border-left: 4px solid var(--color-primary);
+            transition: var(--transition-base);
         }
 
         .subject-info {
@@ -179,83 +397,134 @@
 
         .subject-name {
             font-weight: bold;
-            color: #39ff14;
-            font-size: 1.1rem;
+            color: var(--color-primary);
+            font-size: var(--font-size-md);
         }
 
         .subject-details {
-            color: #ccc;
-            font-size: 0.9rem;
-            margin-top: 5px;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            margin-top: var(--spacing-xs);
         }
 
         .remove-btn {
-            background: #ff4444;
-            color: white;
+            background: var(--color-error);
+            color: var(--color-text);
             border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
+            padding: var(--spacing-sm) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            font-size: var(--font-size-sm);
+            transition: var(--transition-base);
         }
 
         .remove-btn:hover {
-            background: #ff6666;
+            background: var(--color-error-hover);
             transform: scale(1.05);
         }
 
         .total-section {
-            background: linear-gradient(135deg, #39ff14 0%, #2dd40f 100%);
-            color: #000;
-            padding: 25px;
-            border-radius: 10px;
+            background: var(--gradient-primary);
+            color: var(--color-background);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
             text-align: center;
-            font-size: 1.5rem;
+            font-size: var(--font-size-lg);
             font-weight: bold;
-            box-shadow: 0 0 30px rgba(57, 255, 20, 0.3);
+            box-shadow: var(--shadow-primary);
         }
 
         .error-message {
-            background: #ff4444;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-top: 10px;
+            background: var(--color-error);
+            color: var(--color-text);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-sm);
+            margin-top: var(--spacing-sm);
             display: none;
         }
 
         .success-message {
-            background: #39ff14;
-            color: #000;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-top: 10px;
+            background: var(--color-primary);
+            color: var(--color-background);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-sm);
+            margin-top: var(--spacing-sm);
             display: none;
             font-weight: bold;
         }
 
         .empty-state {
             text-align: center;
-            color: #666;
+            color: var(--color-text-muted);
             font-style: italic;
-            padding: 30px;
+            padding: var(--spacing-xxl);
         }
 
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: var(--spacing-sm);
             flex-wrap: wrap;
+        }
+
+        .subject-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--color-background);
+            border: var(--border-primary-hover);
+            border-radius: var(--border-radius-md);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .subject-dropdown.show {
+            display: block;
+        }
+
+        .subject-option {
+            padding: var(--spacing-sm) var(--spacing-md);
+            cursor: pointer;
+            transition: var(--transition-base);
+            color: var(--color-text);
+        }
+
+        .subject-option:hover {
+            background: var(--color-primary-alpha-10);
+        }
+
+        .subject-option.selected {
+            background: var(--color-primary-alpha-20);
+        }
+
+        .subject-dropdown::-webkit-scrollbar {
+            width: var(--spacing-sm);
+        }
+
+        .subject-dropdown::-webkit-scrollbar-track {
+            background: var(--color-background);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .subject-dropdown::-webkit-scrollbar-thumb {
+            background: var(--color-primary-alpha-30);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .subject-dropdown::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary-alpha-50);
         }
 
         @media (max-width: 600px) {
             .container {
-                padding: 20px;
-                margin: 10px;
+                padding: var(--spacing-lg);
+                margin: var(--spacing-sm);
             }
 
             .header h1 {
-                font-size: 2rem;
+                font-size: var(--font-size-xl);
             }
 
             .input-row {
@@ -265,7 +534,7 @@
             .subject-item {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 10px;
+                gap: var(--spacing-sm);
             }
 
             .remove-btn {
@@ -278,12 +547,26 @@
 
             .btn {
                 margin-right: 0;
-                margin-bottom: 10px;
+                margin-bottom: var(--spacing-sm);
             }
         }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" title="Toggle Theme Switcher">
+        <svg viewBox="0 0 24 24">
+            <path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26 c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>
+        </svg>
+    </button>
+    <div class="theme-switcher collapsed">
+        <div class="theme-option active" data-theme="white" title="White Theme"></div>
+        <div class="theme-option" data-theme="green" title="Green Theme"></div>
+        <div class="theme-option" data-theme="blue" title="Blue Theme"></div>
+        <div class="theme-option" data-theme="red" title="Red Theme"></div>
+        <div class="theme-option" data-theme="orange" title="Orange Theme"></div>
+        <div class="theme-option" data-theme="yellow" title="Yellow Theme"></div>
+        <div class="theme-option" data-theme="pink" title="Pink Theme"></div>
+    </div>
     <div class="container">
         <div class="header">
             <h1>Credits Calculator</h1>
@@ -292,11 +575,11 @@
 
         <div class="form-section">
             <div class="form-group">
-                <label for="subjectSelect">Select Subject:</label>
-                <select id="subjectSelect">
-                    <option value="">Choose a subject...</option>
-                    <option value="custom">Add Custom Subject</option>
-                </select>
+                <label for="subjectSearch">Select Subject:</label>
+                <input type="text" id="subjectSearch" placeholder="Search for a subject..." autocomplete="off">
+                <div id="subjectDropdown" class="subject-dropdown">
+                    <div class="subject-option" data-value="custom">Add Custom Subject</div>
+                </div>
             </div>
 
             <div class="custom-inputs" id="customInputs">
@@ -337,7 +620,7 @@
         <div class="subjects-list">
             <h2>Added Subjects</h2>
             <div id="subjectsList">
-                <div class="empty-state">No subjects added yet. Add your first subject above</div>
+                <div class="empty-state">No subjects added yet. Add your first subject above.</div>
             </div>
         </div>
 
@@ -374,10 +657,11 @@
             { name: 'ZPS', credits: 6.0 },
             { name: 'ZMT', credits: 3.0 },
             { name: 'ZWA', credits: 5.0 }
-        ];
+        ].sort((a, b) => a.name.localeCompare(b.name));  // Sort alphabetically
 
         // Global variables
         let subjects = [];
+        let selectedSubject = null;
         const gradeValues = {
             '1.0': 'A',
             '1.5': 'B', 
@@ -387,7 +671,8 @@
         };
 
         // DOM elements
-        const subjectSelect = document.getElementById('subjectSelect');
+        const subjectSearch = document.getElementById('subjectSearch');
+        const subjectDropdown = document.getElementById('subjectDropdown');
         const customInputs = document.getElementById('customInputs');
         const customName = document.getElementById('customName');
         const customCredits = document.getElementById('customCredits');
@@ -399,70 +684,77 @@
 
         // Initialize the application
         function init() {
-            populateSubjectDropdown();
             loadFromStorage();
             updateSubjectsList();
             updateTotalCredits();
+            setupSubjectSearch();
         }
 
-        // Populate subject dropdown with predefined subjects
-        function populateSubjectDropdown() {
-            // Clear existing options except the first two
-            while (subjectSelect.children.length > 2) {
-                subjectSelect.removeChild(subjectSelect.lastChild);
-            }
+        function setupSubjectSearch() {
+            // Initial population of dropdown
+            updateDropdown('');
 
-            // Add predefined subjects
-            predefinedSubjects.forEach(subject => {
-                const option = document.createElement('option');
-                option.value = `${subject.name}|${subject.credits}`;
-                option.textContent = `${subject.name} (${subject.credits} credits)`;
-                subjectSelect.appendChild(option);
+            // Search input event listener
+            subjectSearch.addEventListener('input', (e) => {
+                updateDropdown(e.target.value.trim());
+                subjectDropdown.classList.add('show');
+            });
+
+            // Focus event listener
+            subjectSearch.addEventListener('focus', () => {
+                updateDropdown(subjectSearch.value.trim());
+                subjectDropdown.classList.add('show');
+            });
+
+            // Click event listener for dropdown options
+            subjectDropdown.addEventListener('click', (e) => {
+                const option = e.target.closest('.subject-option');
+                if (!option) return;
+
+                const value = option.dataset.value;
+                if (value === 'custom') {
+                    selectedSubject = { custom: true };
+                    subjectSearch.value = '';
+                    customInputs.classList.add('show');
+                    customName.focus();
+                } else {
+                    const [name, credits] = value.split('|');
+                    selectedSubject = { name, credits: parseFloat(credits), custom: false };
+                    subjectSearch.value = `${name} (${credits} credits)`;
+                    customInputs.classList.remove('show');
+                }
+                subjectDropdown.classList.remove('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#subjectSearch') && !e.target.closest('#subjectDropdown')) {
+                    subjectDropdown.classList.remove('show');
+                }
             });
         }
 
-        // Load data from localStorage
-        function loadFromStorage() {
-            try {
-                const storedSubjects = localStorage.getItem('academicSubjects');
-                if (storedSubjects) {
-                    subjects = JSON.parse(storedSubjects);
-                }
-            } catch (error) {
-                console.error('Error loading from localStorage:', error);
-                subjects = [];
-            }
-        }
+        function updateDropdown(searchTerm) {
+            const filteredSubjects = predefinedSubjects.filter(subject => 
+                subject.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
 
-        // Save data to localStorage (internal function)
-        function saveToStorage() {
-            try {
-                localStorage.setItem('academicSubjects', JSON.stringify(subjects));
-            } catch (error) {
-                console.error('Error saving to localStorage:', error);
-            }
-        }
+            const dropdownHtml = [
+                '<div class="subject-option" data-value="custom">Add Custom Subject</div>'
+            ].concat(filteredSubjects.map(subject => 
+                `<div class="subject-option" data-value="${subject.name}|${subject.credits}">
+                    ${subject.name} (${subject.credits} credits)
+                </div>`
+            ));
 
-        // Event listeners
-        subjectSelect.addEventListener('change', handleSubjectSelection);
-
-        function handleSubjectSelection() {
-            const value = subjectSelect.value;
-            if (value === 'custom') {
-                customInputs.classList.add('show');
-                customName.focus();
-            } else {
-                customInputs.classList.remove('show');
-            }
-            hideMessages();
+            subjectDropdown.innerHTML = dropdownHtml.join('');
         }
 
         function addSubject() {
-            const selectedValue = subjectSelect.value;
             const gradeValue = parseFloat(gradeSelect.value);
             
             // Validation
-            if (!selectedValue) {
+            if (!selectedSubject) {
                 showError('Please select a subject.');
                 return;
             }
@@ -474,7 +766,7 @@
 
             let subjectName, credits;
 
-            if (selectedValue === 'custom') {
+            if (selectedSubject.custom) {
                 subjectName = customName.value.trim();
                 credits = parseFloat(customCredits.value);
 
@@ -488,9 +780,8 @@
                     return;
                 }
             } else {
-                const [name, creditStr] = selectedValue.split('|');
-                subjectName = name;
-                credits = parseFloat(creditStr);
+                subjectName = selectedSubject.name;
+                credits = selectedSubject.credits;
             }
 
             // Check for duplicates
@@ -571,7 +862,8 @@
         }
 
         function resetForm() {
-            subjectSelect.value = '';
+            subjectSearch.value = '';
+            selectedSubject = null;
             gradeSelect.value = '';
             customName.value = '';
             customCredits.value = '';
@@ -597,8 +889,69 @@
             successMessage.style.display = 'none';
         }
 
+        // Load data from localStorage
+        function loadFromStorage() {
+            try {
+                const storedSubjects = localStorage.getItem('academicSubjects');
+                if (storedSubjects) {
+                    subjects = JSON.parse(storedSubjects);
+                }
+            } catch (error) {
+                console.error('Error loading from localStorage:', error);
+                subjects = [];
+            }
+        }
+
+        // Save data to localStorage (internal function)
+        function saveToStorage() {
+            try {
+                localStorage.setItem('academicSubjects', JSON.stringify(subjects));
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+            }
+        }
+
         // Initialize the application when the page loads
         window.addEventListener('load', init);
+
+        // Theme switcher functionality
+        const themeSwitcher = document.querySelector('.theme-switcher');
+        const themeToggle = document.querySelector('.theme-toggle');
+
+        themeToggle.addEventListener('click', () => {
+            themeSwitcher.classList.toggle('collapsed');
+        });
+
+        // Close theme switcher when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.theme-switcher') && 
+                !e.target.closest('.theme-toggle') && 
+                !themeSwitcher.classList.contains('collapsed')) {
+                themeSwitcher.classList.add('collapsed');
+            }
+        });
+
+        document.querySelectorAll('.theme-option').forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove active class from all options
+                document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('active'));
+                // Add active class to clicked option
+                option.classList.add('active');
+                // Set the theme
+                document.documentElement.setAttribute('data-theme', option.getAttribute('data-theme'));
+                // Save the theme preference
+                localStorage.setItem('selectedTheme', option.getAttribute('data-theme'));
+                // Collapse the theme switcher after selection
+                setTimeout(() => themeSwitcher.classList.add('collapsed'), 300);
+            });
+        });
+
+        // Load saved theme preference
+        const savedTheme = localStorage.getItem('selectedTheme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.querySelector(`.theme-option[data-theme="${savedTheme}"]`).classList.add('active');
+        }
     </script>
 </body>
 </html>
