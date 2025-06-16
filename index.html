@@ -550,6 +550,60 @@
                 margin-bottom: var(--spacing-sm);
             }
         }
+
+        /* Mode Switcher Styles */
+        .mode-switcher {
+            display: flex;
+            background: var(--color-background-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xs);
+            margin: var(--spacing-lg) auto;
+            width: fit-content;
+            border: var(--border-primary);
+        }
+
+        .mode-option {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: var(--transition-base);
+            color: var(--color-text-secondary);
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .mode-option.active {
+            background: var(--gradient-primary);
+            color: var(--color-background);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .mode-option:hover:not(.active) {
+            background: var(--color-background-lighter);
+            color: var(--color-primary);
+        }
+
+        .mode-description {
+            text-align: center;
+            margin-top: var(--spacing-md);
+            min-height: 50px;
+        }
+
+        .mode-desc {
+            display: none;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            line-height: 1.5;
+        }
+
+        .mode-desc.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .mode-desc strong {
+            color: var(--color-primary);
+        }
     </style>
 </head>
 <body>
@@ -571,6 +625,20 @@
         <div class="header">
             <h1>Credits Calculator</h1>
             <p>SIT FEL CTU</p>
+            
+            <!-- Mode Switcher -->
+            <div class="mode-switcher">
+                <div class="mode-option active" data-mode="credits">Credits for Schedule</div>
+                <div class="mode-option" data-mode="average">Semester Average</div>
+            </div>
+            <div class="mode-description">
+                <div id="creditsDescription" class="mode-desc active">
+                    Calculate credits needed for schedule registration. Add subjects from <strong>both current and previous semester</strong>.
+                </div>
+                <div id="averageDescription" class="mode-desc">
+                    Calculate weighted semester average (Φ). Add subjects from <strong>one semester only</strong> with final grades.
+                </div>
+            </div>
         </div>
 
         <div class="form-section">
@@ -618,19 +686,24 @@
         </div>
 
         <div class="subjects-list">
-            <h2>Added Subjects</h2>
+            <h2 id="subjectsTitle">Added Subjects</h2>
             <div id="subjectsList">
                 <div class="empty-state">No subjects added yet. Add your first subject above.</div>
             </div>
         </div>
 
         <div class="total-section">
-            <div>Total Calculated Credits: <span id="totalCredits">0.00</span></div>
+            <div id="creditsTotal">Total Calculated Credits: <span id="totalCredits">0.00</span></div>
+            <div id="averageTotal" style="display: none;">
+                <div>Semester Average (Φ): <span id="totalAverage">0.00</span></div>
+                <div style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">
+                    Formula: Φ = Σ(Kp × Zp) / ΣKp
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Predefined subjects with random credits
         const predefinedSubjects = [
             { name: 'PCC', credits: 5.0 },
             { name: 'OMO', credits: 6.0 },
@@ -662,6 +735,7 @@
         // Global variables
         let subjects = [];
         let selectedSubject = null;
+        let currentMode = 'credits'; // 'credits' or 'average'
         const gradeValues = {
             '1.0': 'A',
             '1.5': 'B', 
@@ -681,13 +755,19 @@
         const successMessage = document.getElementById('successMessage');
         const subjectsList = document.getElementById('subjectsList');
         const totalCredits = document.getElementById('totalCredits');
+        const totalAverage = document.getElementById('totalAverage');
+        const creditsTotal = document.getElementById('creditsTotal');
+        const averageTotal = document.getElementById('averageTotal');
+        const subjectsTitle = document.getElementById('subjectsTitle');
 
         // Initialize the application
         function init() {
             loadFromStorage();
             updateSubjectsList();
-            updateTotalCredits();
+            updateTotalDisplay();
             setupSubjectSearch();
+            setupModeSwitch();
+            updateUIForMode();
         }
 
         function setupSubjectSearch() {
@@ -813,7 +893,7 @@
             
             // Update display
             updateSubjectsList();
-            updateTotalCredits();
+            updateTotalDisplay();
             
             hideMessages();
         }
@@ -822,7 +902,7 @@
             subjects = subjects.filter(subject => subject.id !== id);
             saveToStorage(); // Auto-save after removal
             updateSubjectsList();
-            updateTotalCredits();
+            updateTotalDisplay();
         }
 
         function clearAllData() {
@@ -830,7 +910,7 @@
                 subjects = [];
                 localStorage.removeItem('academicSubjects');
                 updateSubjectsList();
-                updateTotalCredits();
+                updateTotalDisplay();
                 showSuccess('All data cleared successfully!');
             }
         }
@@ -841,24 +921,39 @@
                 return;
             }
 
-            const html = subjects.map(subject => `
-                <div class="subject-item">
-                    <div class="subject-info">
-                        <div class="subject-name">${subject.name}</div>
-                        <div class="subject-details">
-                            ${subject.credits} credits × (4 - ${subject.grade}) = ${subject.credits} x ${4 - subject.grade} = ${subject.calculatedCredits.toFixed(2)} calculated credits
+            const html = subjects.map(subject => {
+                let detailsText;
+                if (currentMode === 'credits') {
+                    detailsText = `${subject.credits} credits × (4 - ${subject.grade}) = ${subject.credits} × ${4 - subject.grade} = ${subject.calculatedCredits.toFixed(2)} calculated credits`;
+                } else {
+                    detailsText = `${subject.credits} credits, Grade: ${subject.gradeLetter} (${subject.grade}), Weighted: ${subject.calculatedCredits.toFixed(2)}`;
+                }
+                
+                return `
+                    <div class="subject-item">
+                        <div class="subject-info">
+                            <div class="subject-name">${subject.name}</div>
+                            <div class="subject-details">${detailsText}</div>
                         </div>
+                        <button class="remove-btn" onclick="removeSubject(${subject.id})">Remove</button>
                     </div>
-                    <button class="remove-btn" onclick="removeSubject(${subject.id})">Remove</button>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             subjectsList.innerHTML = html;
         }
 
-        function updateTotalCredits() {
-            const total = subjects.reduce((sum, subject) => sum + subject.calculatedCredits, 0);
-            totalCredits.textContent = total.toFixed(2);
+        function updateTotalDisplay() {
+            if (currentMode === 'credits') {
+                const total = subjects.reduce((sum, subject) => sum + subject.calculatedCredits, 0);
+                totalCredits.textContent = total.toFixed(2);
+            } else {
+                // Calculate weighted average: Φ = Σ(Kp × Zp) / ΣKp
+                const totalWeighted = subjects.reduce((sum, subject) => sum + (subject.credits * subject.grade), 0);
+                const totalCreditsSum = subjects.reduce((sum, subject) => sum + subject.credits, 0);
+                const average = totalCreditsSum > 0 ? totalWeighted / totalCreditsSum : 0;
+                totalAverage.textContent = average.toFixed(3);
+            }
         }
 
         function resetForm() {
@@ -951,6 +1046,55 @@
         if (savedTheme) {
             document.documentElement.setAttribute('data-theme', savedTheme);
             document.querySelector(`.theme-option[data-theme="${savedTheme}"]`).classList.add('active');
+        }
+
+
+
+        function setupModeSwitch() {
+            // Add event listeners for mode switching
+            document.querySelectorAll('.mode-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const selectedMode = option.getAttribute('data-mode');
+                    if (selectedMode !== currentMode) {
+                        currentMode = selectedMode;
+                        localStorage.setItem('calculatorMode', currentMode);
+                        updateUIForMode();
+                    }
+                });
+            });
+
+            // Load saved mode preference
+            const savedMode = localStorage.getItem('calculatorMode');
+            if (savedMode) {
+                currentMode = savedMode;
+            }
+        }
+
+        function updateUIForMode() {
+            // Update mode switcher UI
+            document.querySelectorAll('.mode-option').forEach(option => {
+                if (option.getAttribute('data-mode') === currentMode) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+
+            // Update description visibility
+            document.querySelectorAll('.mode-desc').forEach(desc => desc.classList.remove('active'));
+            if (currentMode === 'credits') {
+                document.getElementById('creditsDescription').classList.add('active');
+                creditsTotal.style.display = 'block';
+                averageTotal.style.display = 'none';
+            } else {
+                document.getElementById('averageDescription').classList.add('active');
+                creditsTotal.style.display = 'none';
+                averageTotal.style.display = 'block';
+            }
+
+            // Update display
+            updateSubjectsList();
+            updateTotalDisplay();
         }
     </script>
 </body>
